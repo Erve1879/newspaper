@@ -39,6 +39,7 @@ class Article(object):
         """
         self.config = config or Configuration()
         self.config = extend_config(self.config, kwargs)
+        self.get_html_method = kwargs.get('html_get_method', network.get_html) 
 
         self.extractor = ContentExtractor(self.config)
 
@@ -145,9 +146,8 @@ class Article(object):
         """Downloads the link's HTML content, don't use if you are batch async
         downloading articles
         """
-        request_method = self.config.get('get_html_method', network.get_html)
         if html is None:
-            html = request_method(self.url, self.config)
+            html = self.get_html_method(self.url, self.config)
         self.set_html(html)
 
         if title is not None:
