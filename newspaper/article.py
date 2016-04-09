@@ -145,8 +145,9 @@ class Article(object):
         """Downloads the link's HTML content, don't use if you are batch async
         downloading articles
         """
+        request_method = self.config.get('get_html_method', network.get_html)
         if html is None:
-            html = network.get_html(self.url, self.config)
+            html = request_method(self.url, self.config)
         self.set_html(html)
 
         if title is not None:
