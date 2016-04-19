@@ -147,7 +147,7 @@ class Article(object):
         downloading articles
         """
         if html is None:
-            html = self.get_html_method(self.url, self.config)
+            html = await self.get_html_method(self.url, self.config)
         self.set_html(html)
 
         if title is not None:
