@@ -39,7 +39,9 @@ class Article(object):
         """
         self.config = config or Configuration()
         self.config = extend_config(self.config, kwargs)
-        self.get_html_method = kwargs.get('html_get_method', network.get_html) 
+        self.get_html_method = kwargs.get('html_get_method', network.get_html)
+        # The HTTP status of the request response
+        self.status = None
 
         self.extractor = ContentExtractor(self.config)
 
@@ -148,6 +150,9 @@ class Article(object):
         """
         if html is None:
             html = await self.get_html_method(self.url, self.config)
+            if isinstance(html, tuple):
+                self.status = html[1]
+                html = html[0]
         self.set_html(html)
 
         if title is not None:
